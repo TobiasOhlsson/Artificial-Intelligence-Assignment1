@@ -19,13 +19,9 @@ for i, line in enumerate(fileinput.input()):
         cities.append((float(c[0]), float(c[1])))
     elif i < (2 * number_of_cities + 2):
         s = line.split()
-        a = i - (number_of_cities+2)
+        a = i - (number_of_cities + 2)
         for j, d in enumerate(s):
             distance_matrix[a][j] = d
-
-
-front_node = random.randint(0, number_of_cities)
-back_node = front_node
 
 
 def create_tsp(front_node, back_node, matrix):
@@ -41,7 +37,7 @@ def create_tsp(front_node, back_node, matrix):
                 min_value_front = matrix[front_node][i]
                 min_position_front = i
             if (matrix[back_node][i] < min_value_back) & (matrix[back_node][i] != -1) & (back_node != i):
-                min_value_back = matrix[i][back_node]
+                min_value_back = matrix[back_node][i]
                 min_position_back = i
         if min_value_front < min_value_back:
             matrix[:, front_node] = -1
@@ -56,14 +52,14 @@ def create_tsp(front_node, back_node, matrix):
     return tour, total_distance
 
 
-tour, score = create_tsp(front_node, back_node, distance_matrix)
-print(tour)
-
-
-
-
-
-
-
-
-
+best_score = float("inf")
+for time in range(number_of_cities):
+    #front_node = random.randint(0, number_of_cities)
+    front_node = time
+    back_node = front_node
+    matrix = np.copy(distance_matrix)
+    t, score = create_tsp(front_node, back_node, matrix)
+    if score < best_score:
+        best_score = score
+        print(t)
+        #print(score)
